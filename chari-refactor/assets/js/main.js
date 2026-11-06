@@ -122,13 +122,27 @@ function motion(){
    else return;
   }else if(type!=='FADE_EFFECT')return;
   if(!el.animate)return;
-  el.animate([from,to],{delay,duration,easing:quart,fill:'both'}).finished.then(()=>{el.style.opacity=to.opacity;el.style.transform=to.transform}).catch(()=>{});
+  const base=getComputedStyle(el).transform;
+  const baseline=base==='none'?'':base;
+  const merge=v=>({...v,transform:v.transform==='translate3d(0,0,0)'?baseline:(v.transform+' '+baseline).trim()});
+  el.animate([merge(from),merge(to)],{delay,duration,easing:quart,fill:'both'}).finished.then(()=>{el.style.opacity=to.opacity;el.style.transform=merge(to).transform}).catch(()=>{});
  }
  const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{
   if(!entry.isIntersecting)return;const el=entry.target,events=targets.get(el)||[];observer.unobserve(el);
   const event=events.find(e=>e[1]==='SCROLL_INTO_VIEW');if(event)run(el,event);
  }),{threshold:0.06,rootMargin:'0px 0px 0px 0px'});
- targets.forEach((events,el)=>{if(!el.closest('.w-slider-mask')&&!el.closest('.w-nav-menu'))observer.observe(el)});
+ targets.forEach((events,el)=>{if(!el.closest('.w-slider-mask')&&!el.closest('.w-nav-menu')&&events.some(e=>e[1]==='SCROLL_INTO_VIEW'))observer.observe(el)});
+ const continuous=[...targets].filter(([el,events])=>events.some(e=>e[1]==='SCROLLING_IN_VIEW'));
+ if(continuous.length){
+  const items=continuous.flatMap(([el])=>$('.intro-paralax',el).map(node=>({el,node,base:getComputedStyle(node).transform})));
+  let pending=false;
+  const tick=()=>{pending=false;const height=innerHeight;items.forEach(({el,node,base})=>{
+   const r=el.getBoundingClientRect(),progress=Math.max(0,Math.min(1,(height-r.top)/(height+r.height)));
+   const translate=-50+100*progress;node.style.transform='translate3d(0,'+translate+'%,0) '+(base==='none'?'':base);
+  })};
+  const schedule=()=>{if(!pending){pending=true;requestAnimationFrame(tick)}};
+  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);schedule();
+ }
 }
 function init(){navigation();sliders();accordions();tabs();lightboxes();forms();motion();$$('.promotion-label-close').forEach(b=>b.addEventListener('click',()=>b.closest('.promotion-label-left')?.remove()))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
