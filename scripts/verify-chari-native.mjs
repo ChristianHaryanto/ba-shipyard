@@ -36,6 +36,13 @@ for(const file of files.filter(p=>/\.(css|js)$/i.test(p))){
  if(file.endsWith('.css'))for(const m of s.matchAll(/url\(\s*(["']?)([^)'"]+)\1\s*\)/gi))check(file,m[2]);
  if(file.endsWith('.js'))try{execFileSync('node',['--check',path.join(root,file)],{stdio:'pipe'})}catch(e){fail(file,'JavaScript syntax error '+String(e.stderr||e.message).slice(0,300))}
 }
+const cssSource=fs.readFileSync(path.join(root,'assets/css/style.css'),'utf8');
+const iconClasses=new Set();
+for(const file of html){const source=fs.readFileSync(path.join(root,file),'utf8');for(const m of source.matchAll(/\\bclass=(["'])(.*?)\\1/g))for(const cls of m[2].split(/\\s+/))if(cls.startsWith('chari-icon-'))iconClasses.add(cls)}
+for(const cls of iconClasses){if(!cssSource.includes('.'+cls+':before')&&!cssSource.includes('.'+cls+'::before'))fail('icons','missing glyph selector for '+cls)}
+if(iconClasses.size&&(!cssSource.includes('[class^="chari-icon-"]')||!cssSource.includes('[class*=" chari-icon-"]')))fail('icons','missing shared native icon font selectors');
+if(cssSource.includes('[class^="w-icon-"]')||cssSource.includes('[class*=" w-icon-"]'))fail('icons','obsolete Webflow icon font selectors');
+counts.iconClasses=iconClasses.size;
 const imageFiles=files.filter(p=>p.startsWith('assets/images/'));
 for(const f of imageFiles)if(f.slice('assets/images/'.length).includes('/'))fail(f,'nested image directory');
 if(html.length!==63)fail('pages','expected 63 HTML pages, got '+html.length);
