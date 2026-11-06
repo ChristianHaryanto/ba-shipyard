@@ -38,7 +38,7 @@ for(const file of files.filter(p=>/\.(css|js)$/i.test(p))){
 }
 const cssSource=fs.readFileSync(path.join(root,'assets/css/style.css'),'utf8');
 const iconClasses=new Set();
-for(const file of html){const source=fs.readFileSync(path.join(root,file),'utf8');for(const m of source.matchAll(/\\bclass=(["'])(.*?)\\1/g))for(const cls of m[2].split(/\\s+/))if(cls.startsWith('chari-icon-'))iconClasses.add(cls)}
+for(const file of html){const source=fs.readFileSync(path.join(root,file),'utf8');for(const m of source.matchAll(/\bclass=(["'])(.*?)\1/g))for(const cls of m[2].split(/\s+/))if(cls.startsWith('chari-icon-'))iconClasses.add(cls)}
 for(const cls of iconClasses){if(!cssSource.includes('.'+cls+':before')&&!cssSource.includes('.'+cls+'::before'))fail('icons','missing glyph selector for '+cls)}
 if(iconClasses.size&&(!cssSource.includes('[class^="chari-icon-"]')||!cssSource.includes('[class*=" chari-icon-"]')))fail('icons','missing shared native icon font selectors');
 if(cssSource.includes('[class^="w-icon-"]')||cssSource.includes('[class*=" w-icon-"]'))fail('icons','obsolete Webflow icon font selectors');
