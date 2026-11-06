@@ -11,7 +11,7 @@ const media=()=>innerWidth>=992?'main':innerWidth>=768?'medium':innerWidth>=480?
 const matched=e=>e.media.includes(media());
 function targets(e){if(e.selector){try{return $(e.selector)}catch{return []}}
  if(!e.idTarget)return [];const id=e.idTarget.split('|').pop();
- return $('[id],[data-w-id]').filter(el=>el.id===id||el.getAttribute('data-w-id')===id)}
+ return $('[id],[data-chari-id]').filter(el=>el.id===id||el.getAttribute('data-chari-id')===id)}
 function affected(root,c){const t=c.target||{};if(t.useEventTarget==='CHILDREN')return t.selector?$(t.selector,root):Array.from(root.children);
  if(t.useEventTarget==='SIBLINGS')return t.selector?$(t.selector,root.parentElement||document).filter(x=>x!==root):Array.from(root.parentElement?.children||[]).filter(x=>x!==root);
  if(t.useEventTarget==='PARENT')return root.parentElement?[root.parentElement]:[];
@@ -69,10 +69,10 @@ function init(){
   else if(e.type==='MOUSE_OUT')el.addEventListener('mouseleave',()=>play(el,e.list));
   else if(e.type==='MOUSE_CLICK'||e.type==='MOUSE_SECOND_CLICK')el.addEventListener('click',()=>play(el,e.list));
   else if(e.type==='DROPDOWN_OPEN'||e.type==='DROPDOWN_CLOSE'){
-   new MutationObserver(()=>{const open=el.classList.contains('w--open')||el.classList.contains('is-open');if(open===(e.type==='DROPDOWN_OPEN'))play(el,e.list)}).observe(el,{attributes:true,attributeFilter:['class']})
+   new MutationObserver(()=>{const open=el.classList.contains('is-open')||el.classList.contains('is-open');if(open===(e.type==='DROPDOWN_OPEN'))play(el,e.list)}).observe(el,{attributes:true,attributeFilter:['class']})
   }
   else if(e.type==='SLIDER_ACTIVE'||e.type==='TAB_ACTIVE'||e.type==='TAB_INACTIVE'){
-   const cls=e.type==='SLIDER_ACTIVE'?'w-active':'w--current';
+   const cls=e.type==='SLIDER_ACTIVE'?'is-active':'is-current';
    new MutationObserver(()=>{const yes=el.classList.contains(cls);if(yes===(e.type!=='TAB_INACTIVE'))play(el,e.list)}).observe(el,{attributes:true,attributeFilter:['class']})
   }
   else if(e.type==='PAGE_START')play(el,e.list);
