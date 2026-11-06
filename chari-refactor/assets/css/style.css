@@ -2689,7 +2689,7 @@ blockquote {
 .primary-button {
   border-radius: var(--large);
   background-color: var(--primary);
-  transform: scale3d(1none, 1none, 1none);
+  transform: scale3d(1, 1, 1);
   color: var(--primary-dark);
   text-align: center;
   letter-spacing: .5px;
@@ -2898,7 +2898,7 @@ blockquote {
 }
 
 .licensing-image {
-  transform: scale3d(1none, 1none, 1none);
+  transform: scale3d(1, 1, 1);
   object-fit: cover;
   transform-style: preserve-3d;
   width: 100%;
@@ -4317,7 +4317,7 @@ blockquote {
 
 .home-projects-image {
   border-radius: var(--medium);
-  transform: scale3d(1none, 1none, 1none);
+  transform: scale3d(1, 1, 1);
   object-fit: cover;
   transform-style: preserve-3d;
   width: 100%;
@@ -5090,7 +5090,7 @@ blockquote {
 .primary-button-dark {
   border-radius: var(--large);
   background-color: var(--primary-dark);
-  transform: scale3d(1none, 1none, 1none);
+  transform: scale3d(1, 1, 1);
   color: var(--primary);
   text-align: center;
   letter-spacing: .5px;
@@ -5533,7 +5533,7 @@ blockquote {
 
 .causes-image-cover {
   border-radius: var(--medium);
-  transform: scale3d(1none, 1none, 1none);
+  transform: scale3d(1, 1, 1);
   object-fit: cover;
   transform-style: preserve-3d;
   width: 100%;
@@ -6152,7 +6152,7 @@ blockquote {
 }
 
 .home-event-image {
-  transform: scale3d(1none, 1none, 1none);
+  transform: scale3d(1, 1, 1);
   object-fit: cover;
   transform-style: preserve-3d;
   width: 100%;
@@ -7074,7 +7074,7 @@ blockquote {
 }
 
 .home-blogs-image {
-  transform: scale3d(1none, 1none, 1none);
+  transform: scale3d(1, 1, 1);
   object-fit: cover;
   transform-style: preserve-3d;
   width: 100%;
@@ -7257,7 +7257,7 @@ blockquote {
 
 .portfolio-image {
   border-radius: var(--medium);
-  transform: scale3d(1none, 1none, 1none);
+  transform: scale3d(1, 1, 1);
   object-fit: cover;
   transform-style: preserve-3d;
   min-width: 100%;
@@ -11526,3 +11526,21 @@ blockquote {
 .native-lightbox-close {position:fixed;top:12px;right:20px;border:0;background:transparent;color:#fff;font-size:38px;cursor:pointer}
 .native-form-notice {color:#a11;margin-top:12px}
 @media(prefers-reduced-motion:reduce){.chari-slide{transition:none!important}}
+
+/* Native causes card image hover: animate the image when the card/link is hovered. */
+.causes-image-link .causes-image-cover { transform: scale(1); transition: transform 600ms ease; will-change: transform; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .list-causes-item:hover .causes-image-cover,
+  .causes-image-link:hover .causes-image-cover,
+  .causes-image-link:focus-visible .causes-image-cover { transform: scale(1.12); }
+}
+@media (prefers-reduced-motion: reduce) { .causes-image-link .causes-image-cover { transition: none; } }
+/* Native dropdown state must preserve the original three-column All Pages megamenu. */
+@media screen and (min-width: 992px) {
+  .chari-dropdown-list.megamenu.is-open { display: flex; flex-direction: row; align-items: flex-start; }
+  .chari-dropdown-list.megamenu > .nav-dropdown-column { flex: 0 0 33.333%; min-width: 0; }
+}
+@media screen and (max-width: 991px) {
+  .chari-dropdown-list.megamenu.is-open { display: flex; flex-direction: column; }
+  .chari-dropdown-list.megamenu > .nav-dropdown-column { width: 100%; flex: none; }
+}
