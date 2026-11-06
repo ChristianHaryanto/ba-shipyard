@@ -1,25 +1,25 @@
-# Chari Refactor — QA Gate
+# Native migration implementation and QA status
 
-This directory is an isolated migration of the 63 static pages in `../chari-128/`. The original directory must remain unchanged.
+Branch: `refactor/chari-native-css-js`.
 
-## Architecture
-All HTML pages load `assets/css/style.css` and `assets/js/main.js` exactly once. Fonts and images are local. Original CSS class names remain to preserve layout compatibility; the native JS does not load the old vendor runtime.
+## Changes
+- All 63 refactor HTML routes migrated from Webflow `w-*` class tokens to `chari-*` or `is-*` states.
+- Interaction `data-w-id` attributes migrated to unique `id` where possible. Existing IDs remain intact; collision cases use `data-chari-interaction-id` and the native runtime targets both.
+- Inline Webflow style selectors migrated, including interaction targets.
+- Main component JavaScript, extracted interactions and CSS selectors updated consistently.
+- 13 duplicate IDs in legacy page markup assigned unique suffixes; CSS grid selectors updated for repeated grid IDs.
+- Native animation presets and extracted event/action-list payload retained.
+- Added static verification and Playwright browser QA scripts, with GitHub Actions workflow.
 
-## Source-level verification completed
-- 63 HTML pages present.
-- One CSS and one JS reference per HTML page.
-- All relative `href`, `src`, `poster`, and `srcset` references resolve to repository assets or directory index pages.
-- All stylesheet `url(...)` references resolve to repository assets.
-- Shared JS compiles successfully.
+## Evidence and limitations
+- Browser automation has **not yet completed**. Workflow will execute on branch push; inspect its result before declaring QA-ready.
+- Visual regression against `chari-128/` and interaction-specific automated assertions remain incomplete.
+- The source `chari-128/` was not edited by these commits.
+- Do not mark Done or claim visual parity until browser QA and original-vs-refactor screenshot comparison pass.
 
-## Browser QA required before merging
-Compare `chari-128` and `chari-refactor` under the same local HTTP server, browser, device scale and viewport.
-
-- Viewports: 1440, 1280, 991, 768, 390 and 375px.
-- Screenshot comparison: home, home-2, home-3, about-us, blog and article, causes and cause detail, projects and project detail, events and event detail, FAQ, contact-us, career, and 404.
-- Inspect all 63 routes for console errors, missing assets/fonts, horizontal overflow, responsive image sizes and broken internal links.
-- Test navigation, dropdowns, mobile menu, Enter/Space/Escape, carousel arrows/dots/autoplay/swipe/resize, FAQ accordions, tabs, lightbox and reduced motion.
-- Compare hover transitions, scroll animations and timing against the original. Native motion is not yet a proven exact reproduction of the original timeline.
-- Forms require a configured backend; never treat a placeholder message as a successful submission.
-
-**Acceptance status: pending real browser regression and pixel comparison. Do not merge into main before QA passes.**
+## Commands
+```sh
+node scripts/verify-chari-native.mjs
+node scripts/chari-browser-qa.mjs
+```
+Browser QA requires `@playwright/test` and Chromium. The GitHub Actions workflow provisions these automatically.
