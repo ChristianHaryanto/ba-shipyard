@@ -271,7 +271,7 @@ td, th {
   font-style: normal;
 }
 
-[class^="w-icon-"], [class*=" w-icon-"] {
+[class^="chari-icon-"], [class*=" chari-icon-"] {
   speak: none;
   font-variant: normal;
   text-transform: none;
@@ -1389,7 +1389,7 @@ textarea.chari-input, textarea.chari-select {
   overflow: hidden;
 }
 
-.chari-slider-arrow-left [class^="w-icon-"], .chari-slider-arrow-right [class^="w-icon-"], .chari-slider-arrow-left [class*=" w-icon-"], .chari-slider-arrow-right [class*=" w-icon-"] {
+.chari-slider-arrow-left [class^="chari-icon-"], .chari-slider-arrow-right [class^="chari-icon-"], .chari-slider-arrow-left [class*=" chari-icon-"], .chari-slider-arrow-right [class*=" chari-icon-"] {
   position: absolute;
 }
 
