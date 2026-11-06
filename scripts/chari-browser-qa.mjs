@@ -29,6 +29,7 @@ try{
     const missing=await page.locator('img').evaluateAll(nodes=>nodes.filter(x=>!x.complete||x.naturalWidth===0).map(x=>x.getAttribute('src')));
     if(missing.length)issues.push('broken images: '+missing.join(', '));
     const dest=path.join(out,String(width)+'x'+height,file.replaceAll('/','__')+'.png');
+    fs.mkdirSync(path.dirname(dest),{recursive:true});
     await page.screenshot({path:dest,fullPage:true,animations:'disabled'});
    }catch(e){issues.push('navigation: '+e.message)}
    results.push({file,viewport:width+'x'+height,status:issues.length?'FAIL':'PASS',issues});
