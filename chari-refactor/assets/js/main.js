@@ -87,6 +87,15 @@ function forms(){
   }
  }));
 }
-function init(){navigation();sliders();accordions();tabs();lightboxes();forms();$$('.promotion-label-close').forEach(b=>b.addEventListener('click',()=>b.closest('.promotion-label-left')?.remove()))}
+function loadInteractions(){
+ if(window.ChariInteractions||document.querySelector('script[data-chari-interactions]'))return;
+ const current=document.querySelector('script[src$="/assets/js/main.js"],script[src="assets/js/main.js"]');
+ if(!current)return;
+ const url=new URL('interactions.js',current.src);
+ const script=document.createElement('script');script.src=url.href;script.defer=true;script.dataset.chariInteractions='true';
+ script.addEventListener('error',()=>console.error('Failed to load Chari interactions:',url.href));
+ document.head.append(script);
+}
+function init(){loadInteractions();navigation();sliders();accordions();tabs();lightboxes();forms();$$('.promotion-label-close').forEach(b=>b.addEventListener('click',()=>b.closest('.promotion-label-left')?.remove()))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
