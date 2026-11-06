@@ -1,0 +1,65 @@
+ .sidebar-nav   a {
+    color           : #fff;
+    text-decoration : none;
+    transition      : all 0.2s ease 0s;
+  }
+ #page-title1 h1{
+      text-shadow: 1px 1px #333;            
+ }
+/*==========  Mobile First Method  ==========*/
+
+  
+    /* Extra Small Devices, Phones */ 
+    @media only screen and (max-width : 480px) {
+        #page-title1{
+            padding-bottom: 0px !important;
+            padding-top: 0px !important;
+        }
+         #page-title1 h1{
+                font-size: 30px;
+         }
+    }
+
+    /* Small Devices, Tablets */
+    @media only screen and (min-width : 768px) {
+
+    }
+
+    /* Medium Devices, Desktops */
+    @media only screen and (min-width : 992px) {
+
+    }
+
+    /* Large Devices, Wide Screens */
+    @media only screen and (min-width : 1200px) {
+
+    }
+
+
+
+    /*==========  Non-Mobile First Method  ==========*/
+
+    /* Large Devices, Wide Screens */
+    @media only screen and (max-width : 1200px) {
+
+    }
+
+    /* Medium Devices, Desktops */
+    @media only screen and (max-width : 992px) {
+
+    }
+
+    /* Small Devices, Tablets */
+    @media only screen and (max-width : 768px) {
+
+    }
+
+    /* Extra Small Devices, Phones */ 
+    @media only screen and (max-width : 480px) {
+        
+    }
+
+    /* Custom, iPhone Retina */ 
+    @media only screen and (max-width : 320px) {
+        
+    }
