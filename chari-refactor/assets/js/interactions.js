@@ -103,7 +103,7 @@ const dirs=['up','down','left','right','up-left','up-right','down-left','down-ri
 const destinations=['center','top','bottom','left','right','top-left','top-right','bottom-left','bottom-right','custom'];
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const active=new WeakMap(),observed=new WeakSet();
-const defaults={effect:'fade',trigger:'manual',direction:'up',destination:'center',distance:80,duration:800,delay:0,stagger:0,easing:'cubic-bezier(.22,1,.36,1)',repeat:1,offset:0,fill:'both',customX:0,customY:0};
+const defaults={effect:'fade',mode:'appear',trigger:'manual',direction:'up',destination:'center',distance:80,duration:800,delay:0,stagger:0,easing:'cubic-bezier(.22,1,.36,1)',repeat:1,offset:0,fill:'both',customX:0,customY:0};
 const num=(v,d)=>Number.isFinite(Number(v))?Number(v):d;
 const norm=v=>String(v||'').toLowerCase().trim().replace(/[\s_]+/g,'-');
 function options(input={}){const o={...defaults,...input};o.effect=norm(o.effect);o.direction=norm(o.direction);o.destination=norm(o.destination);if(!all.includes(o.effect))throw new RangeError('Unknown effect: '+o.effect);if(!dirs.includes(o.direction))throw new RangeError('Unknown direction: '+o.direction);if(!destinations.includes(o.destination))throw new RangeError('Unknown destination: '+o.destination);o.distance=Math.max(0,num(o.distance,80));o.duration=Math.max(0,num(o.duration,800));o.delay=Math.max(0,num(o.delay,0));o.stagger=Math.max(0,num(o.stagger,0));return o}
@@ -114,7 +114,7 @@ function frames(o){
  const [x,y]=vector(o.direction,o.distance),[dx,dy]=destination(o),t=(a,b,s=1,r=0,axis='z')=>({transform:tf(a,b,s,r,axis),opacity:1});
  const last=t(dx,dy),initial=t(x+dx,y+dy);
  switch(o.effect){
- case'fade':return[{opacity:0,transform:last.transform},last];
+ case'fade':return[{opacity:0,transform:initial.transform},last];
  case'slide':return[initial,last];
  case'flip':return[{opacity:0,transform:tf(dx,dy,1,o.direction.includes('left')?-90:90,o.direction==='left'||o.direction==='right'?'y':'x')},last];
  case'grow':return[{opacity:0,transform:tf(dx,dy,.75)},last];
@@ -139,13 +139,13 @@ function play(el,input={}){
  if(!(el instanceof Element))throw new TypeError('ChariEffects.play requires a DOM element');
  const o=options(input);const prior=active.get(el);if(prior)prior.cancel();
  if(reduced.matches){if(appear.includes(o.effect)){el.style.opacity='1'}return null}
- const keyframes=frames(o);const base=getComputedStyle(el).transform;
+ const keyframes=frames(o);if(o.mode==='disappear'&&appear.includes(o.effect))keyframes.reverse();const base=getComputedStyle(el).transform;
  if(base!=='none'){for(const frame of keyframes)if(frame.transform)frame.transform+=' '+base}
  const animation=el.animate(keyframes,{duration:o.duration,delay:o.delay,easing:o.easing,iterations:o.repeat,fill:o.fill});
  active.set(el,animation);animation.finished.catch(()=>{}).finally(()=>{if(active.get(el)===animation)active.delete(el)});
  return animation;
 }
-function fromData(el){const d=el.dataset;return{effect:d.chariEffect,trigger:d.chariTrigger||'scroll',direction:d.chariDirection||'up',destination:d.chariDestination||'center',distance:d.chariDistance??80,duration:d.chariDuration??800,delay:d.chariDelay??0,stagger:d.chariStagger??0,repeat:d.chariRepeat??1,easing:d.chariEasing||defaults.easing,customX:d.chariCustomX??0,customY:d.chariCustomY??0,offset:d.chariOffset??0}}
+function fromData(el){const d=el.dataset;return{effect:d.chariEffect,mode:d.chariMode||'appear',trigger:d.chariTrigger||'scroll',direction:d.chariDirection||'up',destination:d.chariDestination||'center',distance:d.chariDistance??80,duration:d.chariDuration??800,delay:d.chariDelay??0,stagger:d.chariStagger??0,repeat:d.chariRepeat??1,easing:d.chariEasing||defaults.easing,customX:d.chariCustomX??0,customY:d.chariCustomY??0,offset:d.chariOffset??0}}
 function init(root=document){
  const nodes=Array.from(root.querySelectorAll('[data-chari-effect]')).filter(el=>!observed.has(el));
  const scroll=nodes.filter(el=>(el.dataset.chariTrigger||'scroll')==='scroll');
