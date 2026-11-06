@@ -46,7 +46,7 @@ function sliders(){
  });
 }
 function accordions(){
- $('.accordion-item.w-dropdown').forEach(item=>{
+ $$('.accordion-item.w-dropdown').forEach(item=>{
   const toggle=$('.accordion-toggle',item),panel=$('.accordion-list',item),icon=$('.accordion-icon',item);
   if(!toggle||!panel)return;
   panel.style.height='0px';panel.style.overflow='hidden';panel.style.display='none';
