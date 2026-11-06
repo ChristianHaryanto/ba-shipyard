@@ -45,6 +45,22 @@ function sliders(){
   document.addEventListener('visibilitychange',()=>document.hidden?stop():start());render(0,true);start();
  });
 }
+function accordions(){
+ $('.accordion-item.w-dropdown').forEach(item=>{
+  const toggle=$('.accordion-toggle',item),panel=$('.accordion-list',item),icon=$('.accordion-icon',item);
+  if(!toggle||!panel)return;
+  panel.style.height='0px';panel.style.overflow='hidden';panel.style.display='none';
+  toggle.setAttribute('role','button');toggle.setAttribute('tabindex','0');toggle.setAttribute('aria-expanded','false');
+  const set=open=>{
+   item.classList.toggle('is-open',open);toggle.setAttribute('aria-expanded',String(open));
+   if(open){panel.style.display='block';panel.classList.add('w--open');panel.style.transition=reduce.matches?'none':'height 350ms ease';panel.style.height='0px';requestAnimationFrame(()=>{panel.style.height=panel.scrollHeight+'px'})}
+   else {panel.style.height=panel.scrollHeight+'px';requestAnimationFrame(()=>{panel.style.height='0px'});setTimeout(()=>{if(!item.classList.contains('is-open')){panel.classList.remove('w--open');panel.style.display='none'}},reduce.matches?0:370)}
+   if(icon)icon.style.transform=open?'rotate(180deg)':'rotate(0deg)';
+  };
+  panel.addEventListener('transitionend',()=>{if(item.classList.contains('is-open'))panel.style.height='auto'});
+  toggle.addEventListener('click',e=>{e.preventDefault();set(!item.classList.contains('is-open'))});keyboard(toggle,()=>toggle.click());
+ });
+}
 function tabs(){
  $$('.w-tabs').forEach(root=>{const links=$$('.w-tab-link',root),panes=$$('.w-tab-pane',root);
   const activate=i=>{links.forEach((l,j)=>{l.classList.toggle('w--current',j===i);l.setAttribute('aria-selected',String(j===i));l.setAttribute('tabindex',j===i?'0':'-1')});panes.forEach((p,j)=>{p.classList.toggle('w--tab-active',j===i);p.hidden=j!==i})};
@@ -79,6 +95,6 @@ function motion(){
  }),{threshold:.08,rootMargin:'0px 0px 30px 0px'});
  targets.forEach(el=>io.observe(el));
 }
-function init(){navigation();sliders();tabs();lightboxes();forms();motion();$$('.promotion-label-close').forEach(b=>b.addEventListener('click',()=>b.closest('.promotion-label-left')?.remove()))}
+function init(){navigation();sliders();accordions();tabs();lightboxes();forms();motion();$$('.promotion-label-close').forEach(b=>b.addEventListener('click',()=>b.closest('.promotion-label-left')?.remove()))}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
