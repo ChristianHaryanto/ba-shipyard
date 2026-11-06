@@ -11527,14 +11527,9 @@ blockquote {
 .native-form-notice {color:#a11;margin-top:12px}
 @media(prefers-reduced-motion:reduce){.chari-slide{transition:none!important}}
 
-/* Native causes card image hover: animate the image when the card/link is hovered. */
-.causes-image-link .causes-image-cover { transform: scale(1); transition: transform 600ms ease; will-change: transform; }
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .list-causes-item:hover .causes-image-cover,
-  .causes-image-link:hover .causes-image-cover,
-  .causes-image-link:focus-visible .causes-image-cover { transform: scale(1.12); }
-}
-@media (prefers-reduced-motion: reduce) { .causes-image-link .causes-image-cover { transition: none; } }
+/* Causes hover is driven by native interactions.js (1600ms outQuad). */
+.causes-image-link, .causes-image-link .causes-image-cover { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .causes-image-cover { transition: none; } }
 /* Native dropdown state must preserve the original three-column All Pages megamenu. */
 @media screen and (min-width: 992px) {
   .chari-dropdown-list.megamenu.is-open { display: flex; flex-direction: row; align-items: flex-start; }
