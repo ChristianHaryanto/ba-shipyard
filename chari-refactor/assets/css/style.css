@@ -4581,7 +4581,7 @@ blockquote {
 .team-video-lightbox {
   z-index: 1;
   border-radius: var(--medium);
-  background-image: url("../images/d3e54v103j8qbb.cloudfront.net/img/background-image.svg");
+  background-image: url("../images/background-image.svg");
   background-position: 50% 0;
   background-size: cover;
   flex: none;
@@ -4595,21 +4595,21 @@ blockquote {
 }
 
 .team-video-lightbox._1 {
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b3764eac10ba8a6a2bf26e_medium-shot-smiley-woman.webp");
+  background-image: url("../images/65b3764eac10ba8a6a2bf26e_medium-shot-smiley-woman.webp");
   background-position: 50% 0;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .team-video-lightbox._2 {
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b3766f111f2b7f5d208f6a_hispanic-man-with-beard.webp");
+  background-image: url("../images/65b3766f111f2b7f5d208f6a_hispanic-man-with-beard.webp");
   background-position: 50% 0;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
 .team-video-lightbox._3 {
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b3764fcad88d46a333a99d_medium-shot-people-with-donations.webp");
+  background-image: url("../images/65b3764fcad88d46a333a99d_medium-shot-people-with-donations.webp");
   background-position: 50% 0;
   background-repeat: no-repeat;
   background-size: cover;
@@ -5693,7 +5693,7 @@ blockquote {
 .testimonials-slider-style {
   border-radius: var(--medium);
   background-color: #0000;
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b0cea46cceb19438fa3f88_pexels-julia-m-cameron-6995092.webp");
+  background-image: url("../images/65b0cea46cceb19438fa3f88_pexels-julia-m-cameron-6995092.webp");
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -5709,7 +5709,7 @@ blockquote {
 
 .home-event-block {
   border-radius: var(--medium);
-  background-image: url("../images/d3e54v103j8qbb.cloudfront.net/img/background-image.svg");
+  background-image: url("../images/background-image.svg");
   background-position: 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -6113,7 +6113,7 @@ blockquote {
 
 .customer-reviews-left {
   border-radius: var(--large) 0px;
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b36ad7c5c5fcf2ad5e45e6_pexels-liza-summer-6347743.webp");
+  background-image: url("../images/65b36ad7c5c5fcf2ad5e45e6_pexels-liza-summer-6347743.webp");
   background-position: 50% 0;
   background-size: cover;
   flex: none;
@@ -6124,11 +6124,11 @@ blockquote {
 }
 
 .customer-reviews-left.autor {
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b36b733e5b85e23fbb49a0_pexels-rdne-stock-project-6646894.webp");
+  background-image: url("../images/65b36b733e5b85e23fbb49a0_pexels-rdne-stock-project-6646894.webp");
 }
 
 .customer-reviews-left.autor-3 {
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b36b73c69af1123e46a1c4_pexels-antoni-shkraba-7345482.webp");
+  background-image: url("../images/65b36b73c69af1123e46a1c4_pexels-antoni-shkraba-7345482.webp");
 }
 
 .name-container {
@@ -6757,7 +6757,7 @@ blockquote {
   border-radius: var(--medium);
   outline-color: var(--white);
   outline-offset: 0px;
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b0dbef38bc60e61e1a4c51_pexels-rdne-stock-project-6646917.webp");
+  background-image: url("../images/65b0dbef38bc60e61e1a4c51_pexels-rdne-stock-project-6646917.webp");
   background-position: 50% 20%;
   background-size: cover;
   outline-width: 15px;
@@ -6767,22 +6767,22 @@ blockquote {
 }
 
 .content-banner.our-mission {
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b8bf78a82c6a7ff5859393_medium-shot-volunteers.webp");
+  background-image: url("../images/65b8bf78a82c6a7ff5859393_medium-shot-volunteers.webp");
   background-position: 50% 40%;
 }
 
 .content-banner.why-choose-us {
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b8d46d2d223861b6f0677f_pexels-gustavo-fring-7156191.webp");
+  background-image: url("../images/65b8d46d2d223861b6f0677f_pexels-gustavo-fring-7156191.webp");
   background-position: 50% 40%;
 }
 
 .content-banner.contact {
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b8d46d8c4d645a253df0bf_pexels-rdne-stock-project-6646949.webp");
+  background-image: url("../images/65b8d46d8c4d645a253df0bf_pexels-rdne-stock-project-6646949.webp");
   background-position: 50% 40%;
 }
 
 .content-banner.template {
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65b8d46d2d223861b6f0677f_pexels-gustavo-fring-7156191.webp");
+  background-image: url("../images/65b8d46d2d223861b6f0677f_pexels-gustavo-fring-7156191.webp");
   background-position: 50% 40%;
   height: 400px;
 }
@@ -7514,7 +7514,7 @@ blockquote {
 .landing-download-block-wrapper {
   border-radius: var(--medium);
   background-color: var(--primary-dark);
-  background-image: url("../images/cdn.prod.website-files.com/65a9997427039a339d9ae043/65a9997427039a339d9ae0d4_Frame_2047.png");
+  background-image: url("../images/65a9997427039a339d9ae0d4_Frame_2047.png");
   background-position: 0%;
   background-repeat: no-repeat;
   background-size: contain;
