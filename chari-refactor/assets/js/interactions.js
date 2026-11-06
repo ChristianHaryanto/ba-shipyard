@@ -11,7 +11,7 @@ const media=()=>innerWidth>=992?'main':innerWidth>=768?'medium':innerWidth>=480?
 const matched=e=>e.media.includes(media());
 function targets(e){if(e.selector){try{return $(e.selector)}catch{return []}}
  if(!e.idTarget)return [];const id=e.idTarget.split('|').pop();
- return $('[id],[data-chari-id]').filter(el=>el.id===id||el.getAttribute('data-chari-id')===id)}
+ return $('[id],[data-chari-interaction-id]').filter(el=>el.id===id||el.getAttribute('data-chari-interaction-id')===id)}
 function affected(root,c){const t=c.target||{};if(t.useEventTarget==='CHILDREN')return t.selector?$(t.selector,root):Array.from(root.children);
  if(t.useEventTarget==='SIBLINGS')return t.selector?$(t.selector,root.parentElement||document).filter(x=>x!==root):Array.from(root.parentElement?.children||[]).filter(x=>x!==root);
  if(t.useEventTarget==='PARENT')return root.parentElement?[root.parentElement]:[];
