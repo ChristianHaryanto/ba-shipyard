@@ -86,3 +86,77 @@ function init(){
 window.ChariInteractions={init,eventsCount:events.length,actionListsCount:Object.keys(lists).length};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
+
+/* Chari Effects: standalone reusable appear/disappear and emphasis presets.
+ * Usage: data-chari-effect="fade" data-chari-trigger="scroll"
+ *        data-chari-direction="up" data-chari-destination="center"
+ *        data-chari-distance="80" data-chari-duration="800"
+ *        data-chari-delay="100" data-chari-stagger="80"
+ * API: ChariEffects.play(element,{effect:'slide',direction:'left',destination:'center'})
+ */
+(()=>{
+'use strict';
+const appear=['fade','slide','flip','grow','grow-big','shrink','shrink-big','spin','fly','drop'];
+const emphasis=['pop','jiggle','pulse','blink','bounce','flip-left-to-right','flip-right-to-left','rubber-band','jello'];
+const all=[...appear,...emphasis];
+const dirs=['up','down','left','right','up-left','up-right','down-left','down-right','center'];
+const destinations=['center','top','bottom','left','right','top-left','top-right','bottom-left','bottom-right','custom'];
+const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const active=new WeakMap(),observed=new WeakSet();
+const defaults={effect:'fade',trigger:'manual',direction:'up',destination:'center',distance:80,duration:800,delay:0,stagger:0,easing:'cubic-bezier(.22,1,.36,1)',repeat:1,offset:0,fill:'both',customX:0,customY:0};
+const num=(v,d)=>Number.isFinite(Number(v))?Number(v):d;
+const norm=v=>String(v||'').toLowerCase().trim().replace(/[\s_]+/g,'-');
+function options(input={}){const o={...defaults,...input};o.effect=norm(o.effect);o.direction=norm(o.direction);o.destination=norm(o.destination);if(!all.includes(o.effect))throw new RangeError('Unknown effect: '+o.effect);if(!dirs.includes(o.direction))throw new RangeError('Unknown direction: '+o.direction);if(!destinations.includes(o.destination))throw new RangeError('Unknown destination: '+o.destination);o.distance=Math.max(0,num(o.distance,80));o.duration=Math.max(0,num(o.duration,800));o.delay=Math.max(0,num(o.delay,0));o.stagger=Math.max(0,num(o.stagger,0));return o}
+function vector(direction,distance){const v={up:[0,1],down:[0,-1],left:[1,0],right:[-1,0],'up-left':[1,1],'up-right':[-1,1],'down-left':[1,-1],'down-right':[-1,-1],center:[0,0]}[direction];const k=Math.abs(v[0])+Math.abs(v[1])===2?Math.SQRT1_2:1;return [v[0]*distance*k,v[1]*distance*k]}
+function destination(o){const pos={center:[0,0],top:[0,-1],bottom:[0,1],left:[-1,0],right:[1,0],'top-left':[-1,-1],'top-right':[1,-1],'bottom-left':[-1,1],'bottom-right':[1,1],custom:[o.customX/o.distance||0,o.customY/o.distance||0]}[o.destination];return [pos[0]*o.distance,pos[1]*o.distance]}
+const tf=(x=0,y=0,s=1,r=0,axis='z')=>'translate3d('+x+'px,'+y+'px,0) scale('+s+') rotate'+axis.toUpperCase()+'('+r+'deg)';
+function frames(o){
+ const [x,y]=vector(o.direction,o.distance),[dx,dy]=destination(o),t=(a,b,s=1,r=0,axis='z')=>({transform:tf(a,b,s,r,axis),opacity:1});
+ const last=t(dx,dy),initial=t(x+dx,y+dy);
+ switch(o.effect){
+ case'fade':return[{opacity:0,transform:last.transform},last];
+ case'slide':return[initial,last];
+ case'flip':return[{opacity:0,transform:tf(dx,dy,1,o.direction.includes('left')?-90:90,o.direction==='left'||o.direction==='right'?'y':'x')},last];
+ case'grow':return[{opacity:0,transform:tf(dx,dy,.75)},last];
+ case'grow-big':return[{opacity:0,transform:tf(dx,dy,.3)},last];
+ case'shrink':return[{opacity:0,transform:tf(dx,dy,1.25)},last];
+ case'shrink-big':return[{opacity:0,transform:tf(dx,dy,1.8)},last];
+ case'spin':return[{opacity:0,transform:tf(dx,dy,.75,o.direction==='left'?-360:360)},last];
+ case'fly':return[{opacity:0,transform:tf(dx+x*3,dy+y*3,.7)},last];
+ case'drop':return[{opacity:0,transform:tf(dx,dy-o.distance*2)}, {offset:.7,opacity:1,transform:tf(dx,dy+o.distance*.14)},last];
+ case'pop':return[t(0,0),{offset:.45,...t(0,0,1.18)},t(0,0)];
+ case'jiggle':return[t(0,0),{offset:.2,...t(-10,0,1,-5)},{offset:.4,...t(8,0,1,4)},{offset:.6,...t(-5,0,1,-3)},{offset:.8,...t(3,0,1,2)},t(0,0)];
+ case'pulse':return[t(0,0),{offset:.5,...t(0,0,1.09)},t(0,0)];
+ case'blink':return[{opacity:1},{offset:.25,opacity:0},{offset:.5,opacity:1},{offset:.75,opacity:0},{opacity:1}];
+ case'bounce':return[t(0,0),{offset:.35,...t(0,-24)},{offset:.55,...t(0,0)},{offset:.72,...t(0,-12)},t(0,0)];
+ case'flip-left-to-right':return[t(0,0,1,0,'y'),{offset:.5,...t(0,0,1,90,'y')},t(0,0,1,360,'y')];
+ case'flip-right-to-left':return[t(0,0,1,0,'y'),{offset:.5,...t(0,0,1,-90,'y')},t(0,0,1,-360,'y')];
+ case'rubber-band':return[t(0,0),{offset:.3,transform:'scale3d(1.25,.75,1)'},{offset:.4,transform:'scale3d(.75,1.25,1)'},{offset:.5,transform:'scale3d(1.15,.85,1)'},{offset:.65,transform:'scale3d(.95,1.05,1)'},t(0,0)];
+ case'jello':return[t(0,0),{offset:.22,transform:'skewX(-12deg) skewY(-12deg)'},{offset:.33,transform:'skewX(7deg) skewY(7deg)'},{offset:.44,transform:'skewX(-4deg) skewY(-4deg)'},{offset:.55,transform:'skewX(2deg) skewY(2deg)'},t(0,0)];
+ }
+}
+function play(el,input={}){
+ if(!(el instanceof Element))throw new TypeError('ChariEffects.play requires a DOM element');
+ const o=options(input);const prior=active.get(el);if(prior)prior.cancel();
+ if(reduced.matches){if(appear.includes(o.effect)){el.style.opacity='1'}return null}
+ const keyframes=frames(o);const base=getComputedStyle(el).transform;
+ if(base!=='none'){for(const frame of keyframes)if(frame.transform)frame.transform+=' '+base}
+ const animation=el.animate(keyframes,{duration:o.duration,delay:o.delay,easing:o.easing,iterations:o.repeat,fill:o.fill});
+ active.set(el,animation);animation.finished.catch(()=>{}).finally(()=>{if(active.get(el)===animation)active.delete(el)});
+ return animation;
+}
+function fromData(el){const d=el.dataset;return{effect:d.chariEffect,trigger:d.chariTrigger||'scroll',direction:d.chariDirection||'up',destination:d.chariDestination||'center',distance:d.chariDistance??80,duration:d.chariDuration??800,delay:d.chariDelay??0,stagger:d.chariStagger??0,repeat:d.chariRepeat??1,easing:d.chariEasing||defaults.easing,customX:d.chariCustomX??0,customY:d.chariCustomY??0,offset:d.chariOffset??0}}
+function init(root=document){
+ const nodes=Array.from(root.querySelectorAll('[data-chari-effect]')).filter(el=>!observed.has(el));
+ const scroll=nodes.filter(el=>(el.dataset.chariTrigger||'scroll')==='scroll');
+ const io=scroll.length&&'IntersectionObserver'in window?new IntersectionObserver(entries=>{entries.forEach(e=>{if(!e.isIntersecting)return;const el=e.target,o=fromData(el);play(el,o);if(el.dataset.chariLoop!=='true')io.unobserve(el)})},{threshold:.08}):null;
+ nodes.forEach(el=>{observed.add(el);const o=fromData(el),trigger=o.trigger;
+ if(trigger==='scroll')io?io.observe(el):play(el,o);
+ else if(trigger==='hover')el.addEventListener('mouseenter',()=>play(el,o));
+ else if(trigger==='click')el.addEventListener('click',()=>play(el,o));
+ else if(trigger==='load')play(el,o);
+ });
+}
+window.ChariEffects={appear,emphasis,directions:dirs,destinations,presets:all,options,frames,play,init};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init(),{once:true});else init();
+})();
